@@ -26,6 +26,7 @@ SimpleMath.prototype.signum = function (n){
 	}
 };
 
-SimpleMath.prototype.average = function (){
+SimpleMath.prototype.average = function (n1, n2){
 	// TODO
+	return ((n1 + n2)/2);
 };
