@@ -15,7 +15,7 @@
 		<script>
 
 			function isSorted(array){
-				return _.every(array ,function (value,key,list){
+				QUnit.push(_.every(array ,function (value,key,list){
 					// First methode
 					/*if (key == 0){
 						return true;
@@ -27,11 +27,14 @@
 					}*/
 
 					// Second methode
-					return key === 0 || list[key-1]<list[key];
-				})
+					return key === 0 || String(list[key-1])<String(list[key]);
+				}));
 			}
-			console.log(isSorted([1,8,4,5]));
 
+			test('Check list', function(){
+				isSorted([1,2,6,9]);
+				isSorted([1,7,6,9]);
+			})
 		</script>
 	</body>
 </html>
