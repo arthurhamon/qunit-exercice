@@ -5,7 +5,9 @@
 		<title>JS Test Unitaire</title>
 		
 		<link rel="stylesheet" href="vendor/qunit/qunit-1.12.0.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="vendor/underscore.min.js"></script>
+		<script src="vendor/backbone.min.js"></script>
 	</head>
 	<body>
 		<div id="qunit"></div>
@@ -13,28 +15,74 @@
 		
 		<script src="vendor/qunit/qunit-1.12.0.js"></script>
 		<script>
-
-			function isSorted(array){
+			/*function isSorted(array, message){
 				QUnit.push(_.every(array ,function (value,key,list){
 					// First methode
-					/*if (key == 0){
-						return true;
-					}
-					if (list[key-1]<list[key]) {
-						return true;
-					}else{
-						return false;
-					}*/
+					// if (key == 0){
+					// 	return true;
+					// }
+					// if (list[key-1]<list[key]) {
+					// 	return true;
+					// }else{
+					// 	return false;
+					// }
 
 					// Second methode
 					return key === 0 || String(list[key-1])<String(list[key]);
-				}));
+				}), true, true, message);
 			}
 
 			test('Check list', function(){
-				isSorted([1,2,6,9]);
-				isSorted([1,7,6,9]);
-			})
+				isSorted([1,2,6,9], 'Le tableau est trier');
+				isSorted([1,7,6,9], "Le tableau n'est pas trier");
+			})*/
+
+			/* AJAX TEST */
+			var Collection;
+			module('test for the collection', {
+				setup: function(){
+					Collection = Backbone.Collection.extend({});
+
+				},
+				teardown: function(){
+					delete Collection;
+				},
+
+				getNumber: function(collection, positionName){
+					// Look to "collection.where" at backbone.js
+					return collection.where({position: positionName}).length;
+				},
+
+				successCallback: function(response){
+					var num_managers, num_students, num_director;
+
+					this.collection = new Collection(response);
+
+					num_managers = this.getNumber(this.collection, "manager");
+					num_students = this.getNumber(this.collection, "student");
+					num_director = this.getNumber(this.collection, "director");
+
+					expect(3);
+					ok(num_director >= 1, "Il y a au moins 1 directeur");
+					ok(num_managers >= 1, "Il y a au moins 1 manageur");
+					ok(num_students >= 3, "Il y a au moins 3 etudients");
+					
+					start();
+				}
+			});
+
+			QUnit.config.testTimeout = 2000;
+			
+			asyncTest("Check for a key", function(){
+				_.bindAll(this, 'getNumber', 'successCallback');
+
+				$.ajax({
+					type:'GET',
+					dataType:'json',
+					url: './php/json_data_combo.php',
+					success: this.successCallback
+				})
+			});
 		</script>
 	</body>
 </html>
