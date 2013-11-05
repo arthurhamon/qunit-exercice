@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>JS Test Unitaire</title>
+		
+		<link rel="stylesheet" href="vendor/qunit/qunit-1.12.0.css">
+		<script src="vendor/underscore.min.js"></script>
+	</head>
+	<body>
+		<div id="qunit"></div>
+		<div id="qunit-fixture"></div>
+		
+		<script src="vendor/qunit/qunit-1.12.0.js"></script>
+		<script>
+
+			function isSorted(array){
+				return _.every(array ,function (value,key,list){
+					// First methode
+					/*if (key == 0){
+						return true;
+					}
+					if (list[key-1]<list[key]) {
+						return true;
+					}else{
+						return false;
+					}*/
+
+					// Second methode
+					return key === 0 || list[key-1]<list[key];
+				})
+			}
+			console.log(isSorted([1,8,4,5]));
+
+		</script>
+	</body>
+</html>
